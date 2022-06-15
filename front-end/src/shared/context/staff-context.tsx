@@ -2,29 +2,33 @@ import React, { createContext, useState } from 'react';
 import { Person } from 'shared/models/person';
 import { SortOrder, SortBy } from 'staff-app/daily-care/interfaces';
 
-export type StaffContextProps = {
+export type StaffContext = {
   students: Person[];
   studentsView: Person[];
   sortOrder: SortOrder;
   sortBy: SortBy;
 };
 
-const initialState: StaffContextProps = {
+const initialState: StaffContext = {
   students: [],
   studentsView: [],
-  sortOrder: 'none',
-  sortBy: 'none',
+  sortOrder: 'ascending',
+  sortBy: 'first-name',
 };
 
 export const StaffContext = createContext({
   boardingData: initialState,
-  updateStore: (data: StaffContextProps) => {},
+  updateStore: (data: Partial<StaffContext>) => {},
 });
 
-export const StaffContextProvider = ({ children }: any) => {
+type StaffContextProviderProps = {
+  children: React.ReactNode;
+};
+
+export const StaffContextProvider = ({ children }: StaffContextProviderProps) => {
   const [boardingData, setBoardingData] = useState(initialState);
 
-  const updateStore = (data: StaffContextProps) => {
+  const updateStore = (data: Partial<StaffContext>) => {
     setBoardingData({ ...boardingData, ...data });
   };
 

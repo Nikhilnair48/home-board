@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import Button from '@material-ui/core/ButtonBase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,14 +12,27 @@ import {
   ActiveRollOverlay,
   ActiveRollAction,
 } from 'staff-app/components/active-roll-overlay/active-roll-overlay.component';
+import { ToolbarAction } from './interfaces';
+import Toolbar from './tool-bar';
+import { StaffContext } from 'shared/context/staff-context';
 
 export const HomeBoardPage: React.FC = () => {
   const [isRollMode, setIsRollMode] = useState(false);
   const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: 'get-homeboard-students' });
+  const { boardingData, updateStore } = useContext(StaffContext);
 
   useEffect(() => {
     void getStudents();
   }, [getStudents]);
+
+  useEffect(() => {
+    if (data && data.students && boardingData.studentsView.length === 0) {
+      updateStore({
+        students: data.students,
+        studentsView: data.students.sort((a, b) => (a.first_name > b.first_name ? 1 : -1)),
+      });
+    }
+  }, [data, updateStore, boardingData]);
 
   const onToolbarAction = (action: ToolbarAction) => {
     if (action === 'roll') {
@@ -44,9 +57,9 @@ export const HomeBoardPage: React.FC = () => {
           </CenteredContainer>
         )}
 
-        {loadState === 'loaded' && data?.students && (
+        {loadState === 'loaded' && boardingData.studentsView && (
           <>
-            {data.students.map((s) => (
+            {boardingData.studentsView.map((s) => (
               <StudentListTile key={s.id} isRollMode={isRollMode} student={s} />
             ))}
           </>
@@ -60,21 +73,6 @@ export const HomeBoardPage: React.FC = () => {
       </S.PageContainer>
       <ActiveRollOverlay isActive={isRollMode} onItemClick={onActiveRollAction} />
     </>
-  );
-};
-
-type ToolbarAction = 'roll' | 'sort';
-interface ToolbarProps {
-  onItemClick: (action: ToolbarAction, value?: string) => void;
-}
-const Toolbar: React.FC<ToolbarProps> = (props) => {
-  const { onItemClick } = props;
-  return (
-    <S.ToolbarContainer>
-      <div onClick={() => onItemClick('sort')}>First Name</div>
-      <div>Search</div>
-      <S.Button onClick={() => onItemClick('roll')}>Start Roll</S.Button>
-    </S.ToolbarContainer>
   );
 };
 
