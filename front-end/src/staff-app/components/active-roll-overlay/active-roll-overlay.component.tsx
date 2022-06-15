@@ -14,11 +14,10 @@ export const ActiveRollOverlay: React.FC = () => {
 
   const generateSummary = (): StateList[] => {
     const summary: Record<ItemType, number> = {
+      all: students.length,
       present: 0,
       late: 0,
       absent: 0,
-      unmark: 0,
-      all: students.length,
     };
     currentRoll.forEach((roll) => {
       summary[roll.rollState]++;

@@ -27,6 +27,14 @@ export const StudentListTile: React.FC<Props> = ({ student }) => {
     });
   };
 
+  const getSwitcherState = () => {
+    const index = currentRoll.findIndex((roll) => roll.studentId === student.id);
+    if (index > -1) {
+      return currentRoll[index].rollState;
+    }
+    return 'unmark';
+  };
+
   return (
     <S.Container>
       <S.Avatar url={Images.avatar}></S.Avatar>
@@ -35,7 +43,7 @@ export const StudentListTile: React.FC<Props> = ({ student }) => {
       </S.Content>
       {isRollMode && (
         <S.Roll>
-          <RollStateSwitcher onStateChange={updateStudentState} />
+          <RollStateSwitcher initialState={getSwitcherState()} onStateChange={updateStudentState} />
         </S.Roll>
       )}
     </S.Container>
