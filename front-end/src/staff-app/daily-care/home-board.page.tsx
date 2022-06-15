@@ -20,6 +20,7 @@ export const HomeBoardPage: React.FC = () => {
   const [isRollMode, setIsRollMode] = useState(false);
   const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: 'get-homeboard-students' });
   const { boardingData, updateStore } = useContext(StaffContext);
+  const { studentsView } = boardingData;
 
   useEffect(() => {
     void getStudents();
@@ -57,9 +58,9 @@ export const HomeBoardPage: React.FC = () => {
           </CenteredContainer>
         )}
 
-        {loadState === 'loaded' && boardingData.studentsView && (
+        {loadState === 'loaded' && studentsView && (
           <>
-            {boardingData.studentsView.map((s) => (
+            {studentsView.map((s) => (
               <StudentListTile key={s.id} isRollMode={isRollMode} student={s} />
             ))}
           </>

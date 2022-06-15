@@ -7,6 +7,7 @@ export type StaffContext = {
   studentsView: Person[];
   sortOrder: SortOrder;
   sortBy: SortBy;
+  searchQuery: string;
 };
 
 const initialState: StaffContext = {
@@ -14,6 +15,7 @@ const initialState: StaffContext = {
   studentsView: [],
   sortOrder: 'ascending',
   sortBy: 'first-name',
+  searchQuery: '',
 };
 
 export const StaffContext = createContext({
