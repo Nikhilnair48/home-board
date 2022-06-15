@@ -5,10 +5,12 @@ import { BorderRadius, Spacing } from 'shared/styles/styles';
 import { RollStateList } from 'staff-app/components/roll-state/roll-state-list.component';
 import { StaffContext } from 'shared/context/staff-context';
 import { ItemType, StateList } from 'staff-app/daily-care/interfaces';
+import { useApi } from 'shared/hooks/use-api';
 
 export type ActiveRollAction = 'filter' | 'exit';
 
 export const ActiveRollOverlay: React.FC = () => {
+  const [saveRoll, data, loadState] = useApi<{ students: Person[] }>({ url: 'save-roll' });
   const { boardingData, updateStore } = useContext(StaffContext);
   const { isRollMode, currentRoll, students } = boardingData;
 
@@ -30,6 +32,18 @@ export const ActiveRollOverlay: React.FC = () => {
     });
   };
 
+  const saveStudentRoll = () => {
+    saveRoll({
+      student_roll_states: currentRoll.map((roll) => {
+        return {
+          student_id: roll.studentId,
+          roll_state: roll.rollState,
+        };
+      }),
+    });
+    updateStore({ isRollMode: false });
+  };
+
   return (
     <S.Overlay isActive={isRollMode}>
       <S.Content>
@@ -40,11 +54,7 @@ export const ActiveRollOverlay: React.FC = () => {
             <Button color="inherit" onClick={() => updateStore({ isRollMode: false })}>
               Exit
             </Button>
-            <Button
-              color="inherit"
-              style={{ marginLeft: Spacing.u2 }}
-              onClick={() => updateStore({ isRollMode: false })}
-            >
+            <Button color="inherit" style={{ marginLeft: Spacing.u2 }} onClick={saveStudentRoll}>
               Complete
             </Button>
           </div>

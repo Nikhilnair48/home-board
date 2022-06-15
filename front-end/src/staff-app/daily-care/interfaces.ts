@@ -25,5 +25,5 @@ export type StateList = {
 
 export interface RollInfo {
   studentId: number;
-  rollState: RollStateType;
+  rollState: Omit<ItemType, 'unmark'>;
 }
