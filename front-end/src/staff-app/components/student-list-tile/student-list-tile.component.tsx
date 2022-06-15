@@ -1,16 +1,32 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Spacing, BorderRadius, FontWeight } from 'shared/styles/styles';
 import { Images } from 'assets/images';
 import { Colors } from 'shared/styles/colors';
 import { Person, PersonHelper } from 'shared/models/person';
 import { RollStateSwitcher } from 'staff-app/components/roll-state/roll-state-switcher.component';
+import { StaffContext } from 'shared/context/staff-context';
+import { RollStateType } from 'shared/models/roll';
+import { RollInfo } from 'staff-app/daily-care/interfaces';
 
 interface Props {
-  isRollMode?: boolean;
   student: Person;
 }
-export const StudentListTile: React.FC<Props> = ({ isRollMode, student }) => {
+export const StudentListTile: React.FC<Props> = ({ student }) => {
+  const { boardingData, updateStore } = useContext(StaffContext);
+  const { currentRoll, isRollMode } = boardingData;
+
+  const updateStudentState = (rollState: RollStateType) => {
+    const existingIndex = currentRoll.findIndex((roll) => roll.studentId === student.id);
+    const updatedRoll: RollInfo = { studentId: student.id, rollState: rollState };
+    if (existingIndex > -1) currentRoll.splice(existingIndex, 1, updatedRoll);
+    else currentRoll.push(updatedRoll);
+
+    updateStore({
+      currentRoll,
+    });
+  };
+
   return (
     <S.Container>
       <S.Avatar url={Images.avatar}></S.Avatar>
@@ -19,7 +35,7 @@ export const StudentListTile: React.FC<Props> = ({ isRollMode, student }) => {
       </S.Content>
       {isRollMode && (
         <S.Roll>
-          <RollStateSwitcher />
+          <RollStateSwitcher onStateChange={updateStudentState} />
         </S.Roll>
       )}
     </S.Container>

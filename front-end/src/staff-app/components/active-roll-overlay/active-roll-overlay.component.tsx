@@ -1,36 +1,51 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import { BorderRadius, Spacing } from 'shared/styles/styles';
 import { RollStateList } from 'staff-app/components/roll-state/roll-state-list.component';
+import { StaffContext } from 'shared/context/staff-context';
+import { ItemType, StateList } from 'staff-app/daily-care/interfaces';
 
 export type ActiveRollAction = 'filter' | 'exit';
-interface Props {
-  isActive: boolean;
-  onItemClick: (action: ActiveRollAction, value?: string) => void;
-}
 
-export const ActiveRollOverlay: React.FC<Props> = (props) => {
-  const { isActive, onItemClick } = props;
+export const ActiveRollOverlay: React.FC = () => {
+  const { boardingData, updateStore } = useContext(StaffContext);
+  const { isRollMode, currentRoll, students } = boardingData;
+
+  const generateSummary = (): StateList[] => {
+    const summary: Record<ItemType, number> = {
+      present: 0,
+      late: 0,
+      absent: 0,
+      unmark: 0,
+      all: students.length,
+    };
+    currentRoll.forEach((roll) => {
+      summary[roll.rollState]++;
+    });
+    return Object.keys(summary).map((key: string) => {
+      return {
+        type: key as ItemType,
+        count: summary[key as ItemType],
+      };
+    });
+  };
 
   return (
-    <S.Overlay isActive={isActive}>
+    <S.Overlay isActive={isRollMode}>
       <S.Content>
         <div>Class Attendance</div>
         <div>
-          <RollStateList
-            stateList={[
-              { type: 'all', count: 0 },
-              { type: 'present', count: 0 },
-              { type: 'late', count: 0 },
-              { type: 'absent', count: 0 },
-            ]}
-          />
+          <RollStateList stateList={generateSummary()} />
           <div style={{ marginTop: Spacing.u6 }}>
-            <Button color="inherit" onClick={() => onItemClick('exit')}>
+            <Button color="inherit" onClick={() => updateStore({ isRollMode: false })}>
               Exit
             </Button>
-            <Button color="inherit" style={{ marginLeft: Spacing.u2 }} onClick={() => onItemClick('exit')}>
+            <Button
+              color="inherit"
+              style={{ marginLeft: Spacing.u2 }}
+              onClick={() => updateStore({ isRollMode: false })}
+            >
               Complete
             </Button>
           </div>

@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Spacing, BorderRadius, FontWeight } from 'shared/styles/styles';
 import { Colors } from 'shared/styles/colors';
 import { Box, ButtonGroup, Input, TextField } from '@material-ui/core';
-import { PartialStaffContext, SortBy, SortIconProps, SortOrder, ToolbarProps } from './interfaces';
+import { PartialStaffContext, SortBy, SortIconProps, SortOrder } from './interfaces';
 import { StaffContext } from 'shared/context/staff-context';
 import { Person } from 'shared/models/person';
 
@@ -109,13 +109,13 @@ const Search = () => {
   );
 };
 
-const Toolbar: React.FC<ToolbarProps> = (props) => {
-  const { onItemClick } = props;
+const Toolbar: React.FC = () => {
+  const { updateStore } = useContext(StaffContext);
   return (
     <S.ToolbarContainer>
       <SortableHeader />
       <Search />
-      <S.Button isActive onClick={() => onItemClick('roll')}>
+      <S.Button isActive onClick={() => updateStore({ isRollMode: true })}>
         Start Roll
       </S.Button>
     </S.ToolbarContainer>

@@ -17,7 +17,6 @@ import Toolbar from './tool-bar';
 import { StaffContext } from 'shared/context/staff-context';
 
 export const HomeBoardPage: React.FC = () => {
-  const [isRollMode, setIsRollMode] = useState(false);
   const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: 'get-homeboard-students' });
   const { boardingData, updateStore } = useContext(StaffContext);
   const { studentsView } = boardingData;
@@ -35,22 +34,10 @@ export const HomeBoardPage: React.FC = () => {
     }
   }, [data, updateStore, boardingData]);
 
-  const onToolbarAction = (action: ToolbarAction) => {
-    if (action === 'roll') {
-      setIsRollMode(true);
-    }
-  };
-
-  const onActiveRollAction = (action: ActiveRollAction) => {
-    if (action === 'exit') {
-      setIsRollMode(false);
-    }
-  };
-
   return (
     <>
       <S.PageContainer>
-        <Toolbar onItemClick={onToolbarAction} />
+        <Toolbar />
 
         {loadState === 'loading' && (
           <CenteredContainer>
@@ -61,7 +48,7 @@ export const HomeBoardPage: React.FC = () => {
         {loadState === 'loaded' && studentsView && (
           <>
             {studentsView.map((s) => (
-              <StudentListTile key={s.id} isRollMode={isRollMode} student={s} />
+              <StudentListTile key={s.id} student={s} />
             ))}
           </>
         )}
@@ -72,7 +59,7 @@ export const HomeBoardPage: React.FC = () => {
           </CenteredContainer>
         )}
       </S.PageContainer>
-      <ActiveRollOverlay isActive={isRollMode} onItemClick={onActiveRollAction} />
+      <ActiveRollOverlay />
     </>
   );
 };

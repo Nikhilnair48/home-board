@@ -1,4 +1,5 @@
 import { StaffContext } from 'shared/context/staff-context';
+import { RollStateType } from 'shared/models/roll';
 
 export type ToolbarAction = 'roll' | 'sort';
 
@@ -10,11 +11,19 @@ export interface SortIconProps {
   sortOrder: SortOrder;
 }
 
-export interface ToolbarProps {
-  onItemClick: (action: ToolbarAction, value?: string) => void;
-}
-
 export interface SortableHeaderProps {
   onItemClick: (action: ToolbarAction, value?: string) => void;
   sortOrder: SortOrder;
+}
+
+export type ItemType = RollStateType | 'all';
+
+export type StateList = {
+  type: ItemType;
+  count: number;
+};
+
+export interface RollInfo {
+  studentId: number;
+  rollState: RollStateType;
 }
