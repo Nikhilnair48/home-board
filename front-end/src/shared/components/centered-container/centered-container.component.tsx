@@ -1,16 +1,16 @@
-import React from "react"
-import styled from "styled-components"
-import { Spacing } from "shared/styles/styles"
+import React from 'react';
+import styled from 'styled-components';
+import { Spacing } from 'shared/styles/styles';
 
 interface Props {
-  padding?: string
+  padding?: string;
 }
 
-export const CenteredContainer: React.FC<Props> = ({ padding = "60px", children }) => (
+export const CenteredContainer: React.FC<Props> = ({ padding = '60px', children }) => (
   <S.Container>
     <S.Centered padding={padding}>{children}</S.Centered>
   </S.Container>
-)
+);
 
 const S = {
   Container: styled.div`
@@ -22,4 +22,4 @@ const S = {
     padding: ${({ padding }) => padding};
     text-align: center;
   `,
-}
+};

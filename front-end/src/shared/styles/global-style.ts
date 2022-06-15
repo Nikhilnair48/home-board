@@ -1,6 +1,6 @@
-import { createGlobalStyle } from "styled-components"
-import { Colors } from "shared/styles/colors"
-import { FontSize } from "shared/styles/styles"
+import { createGlobalStyle } from 'styled-components';
+import { Colors } from 'shared/styles/colors';
+import { FontSize } from 'shared/styles/styles';
 
 export const GlobalStyle = createGlobalStyle`
   body {
@@ -12,4 +12,4 @@ export const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-`
+`;

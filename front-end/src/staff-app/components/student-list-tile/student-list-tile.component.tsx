@@ -1,14 +1,14 @@
-import React from "react"
-import styled from "styled-components"
-import { Spacing, BorderRadius, FontWeight } from "shared/styles/styles"
-import { Images } from "assets/images"
-import { Colors } from "shared/styles/colors"
-import { Person, PersonHelper } from "shared/models/person"
-import { RollStateSwitcher } from "staff-app/components/roll-state/roll-state-switcher.component"
+import React from 'react';
+import styled from 'styled-components';
+import { Spacing, BorderRadius, FontWeight } from 'shared/styles/styles';
+import { Images } from 'assets/images';
+import { Colors } from 'shared/styles/colors';
+import { Person, PersonHelper } from 'shared/models/person';
+import { RollStateSwitcher } from 'staff-app/components/roll-state/roll-state-switcher.component';
 
 interface Props {
-  isRollMode?: boolean
-  student: Person
+  isRollMode?: boolean;
+  student: Person;
 }
 export const StudentListTile: React.FC<Props> = ({ isRollMode, student }) => {
   return (
@@ -23,8 +23,8 @@ export const StudentListTile: React.FC<Props> = ({ isRollMode, student }) => {
         </S.Roll>
       )}
     </S.Container>
-  )
-}
+  );
+};
 
 const S = {
   Container: styled.div`
@@ -61,4 +61,4 @@ const S = {
     align-items: center;
     margin-right: ${Spacing.u4};
   `,
-}
+};

@@ -1,9 +1,9 @@
-import React from "react"
-import ReactDOM from "react-dom"
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
-import "index.css"
-import StaffApp from "staff-app/app"
-import { GlobalStyle } from "shared/styles/global-style"
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import 'index.css';
+import StaffApp from 'staff-app/app';
+import { GlobalStyle } from 'shared/styles/global-style';
 
 const Home: React.FC = () => {
   return (
@@ -13,8 +13,8 @@ const Home: React.FC = () => {
         <Link to="staff/daily-care">Staff</Link>
       </header>
     </div>
-  )
-}
+  );
+};
 
 ReactDOM.render(
   <React.StrictMode>
@@ -26,5 +26,5 @@ ReactDOM.render(
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
-  document.getElementById("root")
-)
+  document.getElementById('root')
+);
